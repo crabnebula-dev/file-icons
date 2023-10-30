@@ -28,7 +28,7 @@ lazy_static! {
 }
 
 /// Returns the icon for a file.
-#[wasm_bindgen(js_name = getFileIcon)]
+#[wasm_bindgen]
 pub fn get_file_icon(path: &str) -> Option<u64> {
     let icon = FILENAME_ICONS.get(path.as_bytes()).or_else(|| {
         let ext = path.rsplit_once('.')?.1;
@@ -40,7 +40,7 @@ pub fn get_file_icon(path: &str) -> Option<u64> {
 }
 
 /// Returns the icon for a folder.
-#[wasm_bindgen(js_name = getFolderIcon)]
+#[wasm_bindgen]
 pub fn get_folder_icon(path: &str) -> Option<u64> {
     let icon = FOLDER_ICONS.get(path.as_bytes());
 

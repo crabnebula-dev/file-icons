@@ -4,3 +4,4 @@ dist
 .idea
 scripts/*.js
 .DS_STORE
+.build

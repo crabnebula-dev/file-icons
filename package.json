@@ -6,7 +6,7 @@
   "license": "PolyForm-Noncommercial-1.0.0",
   "author": "CrabNebula <hello@crabnebula.dev>",
   "type": "module",
-  "main": "dist/file_icons.js",
+  "main": "dist/index.js",
   "types": "dist/file_icons.d.ts",
   "files": [
     "dist",
@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "gen": "tsup scripts/gen.ts --out-dir scripts --format esm && node scripts/gen.js",
-    "build": "wasm-pack build . --release --out-dir=dist -- -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort"
+    "build": "wasm-pack build . --release --out-dir=.build --out-name index -- -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort && tsup index.ts --out-dir dist --loader \".wasm=file\" --format esm"
   },
   "devDependencies": {
     "tsup": "^7.2.0",
