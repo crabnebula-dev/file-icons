@@ -15,6 +15,14 @@
 
 [mit-or-apache-badge]: https://img.shields.io/badge/license-MIT%20or%20Apache%202.0-blue.svg
 
+This package provides simple & fast programmatic access to the icons 
+from [vscode-icons](https://github.com/vscode-icons/vscode-icons), letting you use them in your own projects!
+
+There are only two functions exported from this package: `getIconForFile` and `getIconForFolder`. 
+They employ a matching heuristic similar to the one used in vscode-icons to find the best matching icon for a given file or folder.
+
+Note that this heuristic is simplified from the `vscode-icons` one, so it may not be as accurate or complete. Feel free to open a PR if you find any issues!
+
 ## Installation
 
 For usage in JavaScript/TypeScript projects:
