@@ -3,3 +3,4 @@ target
 dist
 .idea
 scripts/*.js
+.DS_STORE

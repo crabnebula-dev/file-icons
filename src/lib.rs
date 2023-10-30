@@ -19,15 +19,30 @@ lazy_static! {
 
         Map::new(EXT_ICONS_BYTES).unwrap()
     };
+    static ref FOLDER_ICONS: Map<&'static [u8]> = {
+        const FOLDER_ICONS_BYTES: &[u8] =
+            include_bytes!(concat!(env!("OUT_DIR"), "/folder_icons.bin"));
+
+        Map::new(FOLDER_ICONS_BYTES).unwrap()
+    };
 }
 
-#[wasm_bindgen]
-pub fn get_icon(path: &str) -> Option<u64> {
+/// Returns the icon for a file.
+#[wasm_bindgen(js_name = getFileIcon)]
+pub fn get_file_icon(path: &str) -> Option<u64> {
     let icon = FILENAME_ICONS.get(path.as_bytes()).or_else(|| {
         let ext = path.rsplit_once('.')?.1;
 
         EXT_ICONS.get(ext.as_bytes())
     });
+
+    icon
+}
+
+/// Returns the icon for a folder.
+#[wasm_bindgen(js_name = getFolderIcon)]
+pub fn get_folder_icon(path: &str) -> Option<u64> {
+    let icon = FOLDER_ICONS.get(path.as_bytes());
 
     icon
 }
