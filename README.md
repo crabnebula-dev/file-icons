@@ -1,29 +1,96 @@
-# `get_icon`
+<div align="center">
+  <h1>
+    <code>file-icons</code>
+  </h1>
+  <p>
+    <strong>File Icons for IDEs</strong>
+  </p>
+  <p>
 
-This is essentially a fancy lookup-table to match file names to icons IDs. 
-These icon IDs correspond to an SVG icon in the `web-client/public/icons` folder.
+![MIT or Apache 2.0 licensed][mit-or-apache-badge]
 
-The reason this is written in Rust is A: it's fast, and B: we prebuilt a very fast lookup table (in `build.rs`) 
-that's essentially one big regex. This table is then inlined into a wasm binary and exposed through a simple `get_icon`
-function to JavaScript.
+  </p>
+</div>
 
-> Note:
-> 
-> I really haven't measured any of this, it might be horrifically over-engineered (it most likely is). 
-> But it works and is reasonably fast and small. So ¯\\\_(ツ)\_/¯.
 
-## Building
+[mit-or-apache-badge]: https://img.shields.io/badge/license-MIT%20or%20Apache%202.0-blue.svg
 
-With Rust installed run:
+## Installation
 
+For usage in JavaScript/TypeScript projects:
+
+```sh
+npm install file-icons
+# OR
+yarn add file-icons
+# OR
+pnpm add file-icons
 ```
-wasm-pack build .
+
+For usage in Rust projects:
+
+```sh
+cargo add file-icons
 ```
 
-or 
+## Usage
 
+### Matching a File Icon
+
+`getIconForFile` returns the URL of the icon for a given file or `null` if no matching icon could be found.
+You **MUST** call `setCDN` before calling this function with a valid URL to where the icons from this package are hosted.
+
+```js
+import { setCDN, getIconForFile } from 'file-icons';
+
+setCDN('/icons/'); // point this to wherever you have hosted the file-icons/icons folder
+
+const icon = getIconForFile('foo.js');
 ```
-wasm-pack build . --release -- -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort
- ```
 
-if you want to build an optimized release binary
+### Matching a Folder Icon
+
+`getIconForFolder` returns the URL of the icon for a given folder or `null` if no matching icon could be found.
+You **MUST** call `setCDN` before calling this function with a valid URL to where the icons from this package are hosted.
+
+```js
+import { setCDN, getIconForFolder } from 'file-icons';
+
+setCDN('/icons/'); // point this to wherever you have hosted the file-icons/icons folder
+
+const icon = getIconForFolder('.github');
+```
+
+### Usage from Rust
+
+This package can also be used as a Rust crate. The API is a bit lower level though, 
+i.e. instead of returning a URL to the icon, it returns the `u64` ID of the icon. 
+Each ID maps to a `.svg` file in the `icons` folder.
+
+```rust
+use file_icons::get_icon_for_file;
+
+fn main() {
+    let icon = get_icon_for_file("foo.js"); // Returns the ID of the icon
+    println!("{}", icon);
+}
+```
+
+## Contributing
+
+PRs are welcome!
+
+#### License
+
+<sup>
+Licensed under either of <a href="LICENSE-APACHE">Apache License, Version
+2.0</a> or <a href="LICENSE-MIT">MIT license</a> at your option.
+</sup>
+
+<br>
+
+<sub>
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in this crate by you, as defined in the Apache-2.0 license, shall
+be dual licensed as above, without any additional terms or conditions.
+</sub>

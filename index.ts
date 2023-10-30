@@ -1,5 +1,4 @@
-import { get_file_icon } from "./.build/index.js";
-import { get_folder_icon } from "./.build/index.js";
+import { get_icon_for_file, get_icon_for_folder } from "./.build/index.js";
 
 let CDN_ROOT = null;
 
@@ -16,9 +15,9 @@ function iconUrl(icon) {
 }
 
 export function getIconForFile(path) {
-  return iconUrl(get_file_icon(path));
+  return iconUrl(get_icon_for_file(path));
 }
 
 export function getIconForFolder(path) {
-    return iconUrl(get_folder_icon(path));
+    return iconUrl(get_icon_for_folder(path));
 }
