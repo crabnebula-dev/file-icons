@@ -5,3 +5,5 @@ dist
 scripts/*.js
 .DS_STORE
 .build
+Cargo.lock
+pnpm-lock.yaml
