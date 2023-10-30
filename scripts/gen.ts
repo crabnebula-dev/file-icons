@@ -101,4 +101,4 @@ const FOLDER_ICONS: [(&str, u64); ${folderIcons.length}] = [
 ];
 `
 
-await writeFile('generated.rs', out);
+await writeFile('src/generated.rs', out);

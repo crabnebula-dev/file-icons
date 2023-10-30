@@ -2,8 +2,7 @@ use fst::Map;
 use std::path::Path;
 use std::{env, fs};
 
-include!("generated.rs");
-
+include!("src/generated.rs");
 fn main() {
     let out_dir = env::var_os("OUT_DIR").unwrap();
 
