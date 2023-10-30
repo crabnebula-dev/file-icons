@@ -1,0 +1,5 @@
+node_modules
+target
+dist
+.idea
+scripts/*.js
