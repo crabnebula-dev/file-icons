@@ -6,11 +6,10 @@
   "author": "CrabNebula <hello@crabnebula.dev>",
   "keywords": [],
   "type": "module",
-  "main": "lib.js",
-  "types": "lib.d.ts",
+  "main": "dist/lib.js",
+  "types": "dist/lib.d.ts",
   "files": [
-    "lib.js",
-    "lib.d.ts",
+    "dist",
     "icons"
   ],
   "scripts": {
