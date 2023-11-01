@@ -1,5 +1,4 @@
-#!/usr/bin/env ts-node
-
+/// <reference lib="es2020" />
 import { writeFile, copyFile } from 'fs/promises'
 import { extensions as fileExtensions } from '../vscode-icons/src/iconsManifest/supportedExtensions'
 import { extensions as folderExtensions } from '../vscode-icons/src/iconsManifest/supportedFolders'

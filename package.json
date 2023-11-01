@@ -1,23 +1,26 @@
 {
   "name": "file-icons",
-  "private": true,
   "version": "0.1.0",
-  "description": "Solid CSR Template",
-  "license": "PolyForm-Noncommercial-1.0.0",
+  "description": "File Icons for IDEs",
+  "license": "MIT OR Apache-2.0",
   "author": "CrabNebula <hello@crabnebula.dev>",
+  "keywords": [],
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/file_icons.d.ts",
+  "main": "lib.js",
+  "types": "lib.d.ts",
   "files": [
-    "dist",
+    "lib.js",
+    "lib.d.ts",
     "icons"
   ],
   "scripts": {
-    "gen": "tsup scripts/gen.ts --out-dir scripts --format esm && node scripts/gen.js",
-    "build": "wasm-pack build . --release --out-dir=.build --out-name index -- -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort && tsup index.ts --out-dir dist --loader \".wasm=file\" --format esm"
+    "gen-lut": "tsup scripts/gen-lut.ts --out-dir scripts --format esm && node scripts/gen-lut.js",
+    "build:rust": "cargo build --release --target wasm32-unknown-unknown -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort",
+    "build:js": "pnpm tsup src/lib.ts --out-dir dist --format esm --target safari13 --dts",
+    "build": "pnpm build:rust && pnpm build:js && cp target/wasm32-unknown-unknown/release/file_icons.wasm dist"
   },
   "devDependencies": {
     "tsup": "^7.2.0",
-    "wasm-pack": "^0.12.1"
+    "typescript": "^5.2.2"
   }
 }

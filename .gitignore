@@ -1,9 +1,6 @@
-node_modules
-target
-dist
-.idea
-scripts/*.js
+/target
+/Cargo.lock
+/dist
+/node_modules
 .DS_STORE
-.build
-Cargo.lock
-pnpm-lock.yaml
+.idea

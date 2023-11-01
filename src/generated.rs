@@ -712,7 +712,7 @@ const EXT_ICONS: [(&str, u64); 710] = [
     ("yml", 668),
     ("zig", 672),
     ("zip", 671),
-    ("zipx", 671)
+    ("zipx", 671),
 ];
 
 const FILENAME_ICONS: [(&str, u64); 1000] = [
@@ -1715,7 +1715,7 @@ const FILENAME_ICONS: [(&str, u64); 1000] = [
     ("windi.config.js", 644),
     ("windi.config.ts", 644),
     ("wpml-config.xml", 645),
-    ("yarn.lock", 665)
+    ("yarn.lock", 665),
 ];
 
 const FOLDER_ICONS: [(&str, u64); 413] = [
@@ -2131,5 +2131,5 @@ const FOLDER_ICONS: [(&str, u64); 413] = [
     ("windows", 1081),
     ("wit", 1082),
     ("www", 1084),
-    ("wwwroot", 1084)
+    ("wwwroot", 1084),
 ];
