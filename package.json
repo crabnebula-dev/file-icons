@@ -13,13 +13,14 @@
     "icons"
   ],
   "scripts": {
-    "gen-lut": "tsup scripts/gen-lut.ts --out-dir scripts --format esm && node scripts/gen-lut.js",
+    "gen-lut": "esbuild scripts/gen-lut.ts --bundle --outdir=scripts --format=esm --platform=node && node scripts/gen-lut.js",
     "build:rust": "cargo build --release --target wasm32-unknown-unknown -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort",
-    "build:js": "pnpm tsup src/lib.ts --out-dir dist --format esm --target safari13 --dts",
-    "build": "pnpm build:rust && pnpm build:js && cp target/wasm32-unknown-unknown/release/file_icons.wasm dist"
+    "build:dts": "tsc --declaration --emitDeclarationOnly --declarationDir dist src/lib.ts src/wasm.d.ts",
+    "build:js": "esbuild src/lib.ts --bundle --format=esm --outdir=dist --loader:.wasm=copy",
+    "build": "rm -rf dist && pnpm build:rust && pnpm build:dts && pnpm build:js"
   },
   "devDependencies": {
-    "tsup": "^7.2.0",
+    "esbuild": "^0.19.5",
     "typescript": "^5.2.2"
   }
 }

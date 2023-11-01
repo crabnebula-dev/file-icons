@@ -1,17 +1,12 @@
-/// <reference lib="es2020" />
-let wasm;
+/// <reference lib="esnext" />
+
+import * as _wasm from '../target/wasm32-unknown-unknown/release/file_icons.wasm'
+
+const wasm = _wasm;
 let ICON_ROOT;
 
-interface InitOptions {
-    wasm: Response | PromiseLike<Response>,
-    icons: string
-}
-
-export async function init(opts: InitOptions) {
-    ICON_ROOT = opts.icons.endsWith('/') ? opts.icons : opts.icons + '/'
-
-    const { instance } = await WebAssembly.instantiateStreaming(opts.wasm);
-    wasm = instance.exports;
+export async function init(root: string) {
+    ICON_ROOT = root.endsWith('/') ? root : root + '/'
 }
 
 let textEncoder = new TextEncoder();

@@ -1,10 +1,9 @@
 // src/lib.ts
-var wasm;
+import * as _wasm from "./file_icons-S7HRAXKT.wasm";
+var wasm = _wasm;
 var ICON_ROOT;
-async function init(opts) {
-  ICON_ROOT = opts.icons.endsWith("/") ? opts.icons : opts.icons + "/";
-  const { instance } = await WebAssembly.instantiateStreaming(opts.wasm);
-  wasm = instance.exports;
+async function init(root) {
+  ICON_ROOT = root.endsWith("/") ? root : root + "/";
 }
 var textEncoder = new TextEncoder();
 function lookupIcon(path, fn) {
