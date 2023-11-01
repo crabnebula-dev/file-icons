@@ -14,7 +14,6 @@
     "icons"
   ],
   "scripts": {
-    "test:js": "deno test --allow-read --ignore=vscode-icons",
     "gen-lut": "tsup scripts/gen-lut.ts --out-dir scripts --format esm && node scripts/gen-lut.js",
     "build:rust": "cargo build --release --target wasm32-unknown-unknown -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort",
     "build:js": "pnpm tsup src/lib.ts --out-dir dist --format esm --target safari13 --dts",
@@ -22,7 +21,6 @@
   },
   "devDependencies": {
     "tsup": "^7.2.0",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "typescript": "^5.2.2"
   }
 }
