@@ -34,7 +34,7 @@ const complexFilenameIcons = fileIconsWithoutDisabled
     })
 
 const languageIcons = fileIconsWithoutDisabled
-    .filter(icon => icon.languages && icon.languages.length > 0)
+    .filter(icon => icon.languages && icon.languages.length > 0 && !["tailwind"].includes(icon.icon))
     .flatMap(icon => icon.languages.map(lang => [lang.defaultExtension, icon.icon]))
 
 const simpleExtIcons = fileIconsWithoutDisabled
@@ -53,7 +53,7 @@ const complexExtIcons = fileIconsWithoutDisabled
 const filenameIcons = Object.entries(Object.fromEntries([...simpleFilenameIcons, ...complexFilenameIcons]))
     .sort(sortIcons);
 
-const extIcons = Object.entries(Object.fromEntries([...languageIcons, ...simpleExtIcons, ...complexExtIcons]))
+const extIcons = Object.entries(Object.fromEntries([...simpleExtIcons, ...complexExtIcons, ...languageIcons]))
     .sort(sortIcons);
 
 
