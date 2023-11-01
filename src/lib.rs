@@ -1,4 +1,16 @@
+/*!
+This package provides simple & fast programmatic access to the icons from
+[vscode-icons](https://github.com/vscode-icons/vscode-icons).
+
+This crate is heavily optimized for small file size.
+
+## Usage
+
+
+ */
+
 #![no_std]
+#![cfg_attr(target_arch = "wasm32", feature(core_intrinsics))]
 
 use core::{slice, str};
 use fst::Map;
@@ -30,7 +42,8 @@ lazy_static! {
 }
 
 #[no_mangle]
-pub unsafe fn get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
+#[inline]
+unsafe fn _get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
 
@@ -44,11 +57,36 @@ pub unsafe fn get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
 }
 
 #[no_mangle]
-pub unsafe fn get_icon_for_folder(data: *mut u8, len: usize) -> Option<u64> {
+#[inline]
+unsafe fn _get_icon_for_folder(data: *mut u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
 
     let icon = FOLDER_ICONS.get(path.as_bytes());
 
     icon
+}
+
+/// Returns the ID of an icon for a given file.
+///
+/// If no icon can be found, `None` is returned.
+/// The ID corresponds to the file names in the `icons` folder
+#[cfg(not(target_arch = "wasm32"))]
+pub fn get_icon_for_file(path: &str) -> Option<u64> {
+    unsafe { _get_icon_for_file(path.as_bytes().as_ptr() as *mut u8, path.len()) }
+}
+
+/// Returns the ID of an icon for a given folder.
+///
+/// If no icon can be found, `None` is returned.
+/// The ID corresponds to the file names in the `icons` folder
+#[cfg(not(target_arch = "wasm32"))]
+pub fn get_icon_for_folder(path: &str) -> Option<u64> {
+    unsafe { _get_icon_for_folder(path.as_bytes().as_ptr() as *mut u8, path.len()) }
+}
+
+#[cfg(target_arch = "wasm32")]
+#[panic_handler]
+fn panic_handler(_info: &core::panic::PanicInfo) -> ! {
+    core::intrinsics::abort()
 }

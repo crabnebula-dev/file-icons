@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "gen-lut": "esbuild scripts/gen-lut.ts --bundle --outdir=scripts --format=esm --platform=node && node scripts/gen-lut.js",
-    "build:rust": "cargo build --release --target wasm32-unknown-unknown -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort",
+    "build:rust": "cargo build --release --target wasm32-unknown-unknown -Z build-std=core,panic_abort -Z build-std-features=panic_immediate_abort",
     "build:dts": "tsc --declaration --emitDeclarationOnly --declarationDir dist src/lib.ts src/wasm.d.ts",
     "build:js": "esbuild src/lib.ts --bundle --format=esm --outdir=dist --loader:.wasm=copy",
     "build": "rm -rf dist && pnpm build:rust && pnpm build:dts && pnpm build:js"

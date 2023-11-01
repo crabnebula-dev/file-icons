@@ -11,7 +11,7 @@ export function setCDN(root: string) {
 
 let textEncoder = new TextEncoder();
 
-function lookupIcon(path: string, fn: (retptr:number, ptr: number, len: number) => void) {
+function lookupIcon(path: string, fn: (retptr:number, ptr: number, len: number) => void): string | null {
     if (!wasm) throw new Error('Must call init() before using any functions.');
 
     const view = new Uint8Array(wasm.memory.buffer, 0, 1024);
@@ -28,10 +28,18 @@ function lookupIcon(path: string, fn: (retptr:number, ptr: number, len: number) 
 
 }
 
-export function getIconForFile(path: string) {
-    return lookupIcon(path, wasm.get_icon_for_file)
+/**
+ * Returns the URL of the icon for a given file or `null` if no matching icon could be found.
+ * You **MUST** call `setCDN` before calling this function with a valid URL to where the icons from this package are hosted.
+ */
+export function getIconForFile(path: string): string | null {
+    return lookupIcon(path, wasm._get_icon_for_file)
 }
 
-export function getIconForFolder(path: string) {
-    return lookupIcon(path, wasm.get_icon_for_folder)
+/**
+ * Returns the URL of the icon for a given folder or `null` if no matching icon could be found.
+ * You **MUST** call `setCDN` before calling this function with a valid URL to where the icons from this package are hosted.
+ */
+export function getIconForFolder(path: string): string | null {
+    return lookupIcon(path, wasm._get_icon_for_folder)
 }
