@@ -4,17 +4,29 @@ This package provides simple & fast programmatic access to the icons from
 
 This crate is heavily optimized for small file size.
 
-## Usage
+## `no_std` support
 
+This crate is primarily meant to be used on the web through npm.
+To this end a lot of optimization has been done to reduce the size of the WASM binary (the current file size is 17.6kB).
 
+When `no_std` support is enabled, this crate will use neither `std` nor `alloc`.
+To enable it, you have to disable default features:
+
+```toml
+file-icons = { version = "0.1", default-features = false }
+```
+
+In `no_std` mode, [`get_icon_for_file`] and [`get_icon_for_folder`] are *not* available.
  */
 
-#![no_std]
-#![cfg_attr(target_arch = "wasm32", feature(core_intrinsics))]
+#![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(feature = "_web_build", feature(core_intrinsics))]
 
 use core::{slice, str};
 use fst::Map;
 use lazy_static::lazy_static;
+#[cfg(feature = "std")]
+use std::path::Path;
 
 lazy_static! {
     static ref FILENAME_ICONS: Map<&'static [u8]> = {
@@ -41,9 +53,10 @@ lazy_static! {
     };
 }
 
+/// Unsafe low-level version of [`get_icon_for_file`]. Only use this in `no_std` mode.
 #[no_mangle]
 #[inline]
-unsafe fn _get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
+pub unsafe fn _get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
 
@@ -56,9 +69,10 @@ unsafe fn _get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
     icon
 }
 
+/// Unsafe low-level version of [`get_icon_for_folder`]. Only use this in `no_std` mode.
 #[no_mangle]
 #[inline]
-unsafe fn _get_icon_for_folder(data: *mut u8, len: usize) -> Option<u64> {
+pub unsafe fn _get_icon_for_folder(data: *mut u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
 
@@ -71,21 +85,23 @@ unsafe fn _get_icon_for_folder(data: *mut u8, len: usize) -> Option<u64> {
 ///
 /// If no icon can be found, `None` is returned.
 /// The ID corresponds to the file names in the `icons` folder
-#[cfg(not(target_arch = "wasm32"))]
-pub fn get_icon_for_file(path: &str) -> Option<u64> {
-    unsafe { _get_icon_for_file(path.as_bytes().as_ptr() as *mut u8, path.len()) }
+#[cfg(feature = "std")]
+pub fn get_icon_for_file(path: &Path) -> Option<u64> {
+    let path = path.to_string_lossy();
+    unsafe { _get_icon_for_file(path.as_ptr() as *mut u8, path.len()) }
 }
 
 /// Returns the ID of an icon for a given folder.
 ///
 /// If no icon can be found, `None` is returned.
 /// The ID corresponds to the file names in the `icons` folder
-#[cfg(not(target_arch = "wasm32"))]
-pub fn get_icon_for_folder(path: &str) -> Option<u64> {
-    unsafe { _get_icon_for_folder(path.as_bytes().as_ptr() as *mut u8, path.len()) }
+#[cfg(feature = "std")]
+pub fn get_icon_for_folder(path: &Path) -> Option<u64> {
+    let path = path.to_string_lossy();
+    unsafe { _get_icon_for_folder(path.as_ptr() as *mut u8, path.len()) }
 }
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(feature = "_web_build")]
 #[panic_handler]
 fn panic_handler(_info: &core::panic::PanicInfo) -> ! {
     core::intrinsics::abort()
