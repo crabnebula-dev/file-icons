@@ -2,7 +2,7 @@
 import * as _wasm from "./file_icons-S7HRAXKT.wasm";
 var wasm = _wasm;
 var ICON_ROOT;
-async function setCDN(root) {
+function setCDN(root) {
   ICON_ROOT = root.endsWith("/") ? root : root + "/";
 }
 var textEncoder = new TextEncoder();

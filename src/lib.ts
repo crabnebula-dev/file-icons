@@ -5,7 +5,7 @@ import * as _wasm from '../target/wasm32-unknown-unknown/release/file_icons.wasm
 const wasm = _wasm;
 let ICON_ROOT;
 
-export async function setCDN(root: string) {
+export function setCDN(root: string) {
     ICON_ROOT = root.endsWith('/') ? root : root + '/'
 }
 
