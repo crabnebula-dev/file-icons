@@ -13,16 +13,14 @@ crate-type = ["cdylib"]
 
 [dependencies]
 fst = "0.4.7"
-#fst = { path = "/Users/crabnejonas/Documents/GitHub/fst", default-features = false }
 lazy_static = "1.4.0"
 
 [build-dependencies]
 fst = "0.4.7"
-#fst = { path = "/Users/crabnejonas/Documents/GitHub/fst" }
 
 [profile.release]
 panic = "abort"
 codegen-units = 1
 lto = true
-opt-level = "z"
-#strip = true
+opt-level = 3
+strip = true
