@@ -18,6 +18,13 @@ lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
 [build-dependencies]
 fst = { git = "https://github.com/CrabNejonas/fst" }
 
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false, features = ["html_reports"] }
+
+[[bench]]
+name = "simple"
+harness = false
+
 [features]
 default = ["std"]
 std = []
