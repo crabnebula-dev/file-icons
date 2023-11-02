@@ -1,23 +1,26 @@
 {
-  "name": "file-icons",
-  "private": true,
+  "name": "@crabnebula/file-icons",
   "version": "0.1.0",
-  "description": "Solid CSR Template",
-  "license": "PolyForm-Noncommercial-1.0.0",
-  "author": "CrabNebula <hello@crabnebula.dev>",
+  "description": "File Icons for IDEs",
+  "license": "MIT OR Apache-2.0",
+  "author": "Jonas Kruckenberg <jonas@crabnebula.dev>",
+  "keywords": ["icons", "file-icons"],
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/file_icons.d.ts",
+  "main": "dist/lib.js",
+  "types": "dist/lib.d.ts",
   "files": [
     "dist",
     "icons"
   ],
   "scripts": {
-    "gen": "tsup scripts/gen.ts --out-dir scripts --format esm && node scripts/gen.js",
-    "build": "wasm-pack build . --release --out-dir=.build --out-name index -- -Z build-std=core,std,alloc,panic_abort -Z build-std-features=panic_immediate_abort && tsup index.ts --out-dir dist --loader \".wasm=file\" --format esm"
+    "gen-lut": "esbuild scripts/gen-lut.ts --bundle --outdir=scripts --format=esm --platform=node && node scripts/gen-lut.js",
+    "build:rust": "cargo build --release --target wasm32-unknown-unknown --no-default-features --features _web_build -Z build-std=core,panic_abort -Z build-std-features=panic_immediate_abort",
+    "build:dts": "tsc --declaration --emitDeclarationOnly --declarationDir dist src/lib.ts src/wasm.d.ts",
+    "build:js": "esbuild src/lib.ts --bundle --format=esm --outdir=dist --loader:.wasm=copy",
+    "build": "rm -rf dist && pnpm build:rust && pnpm build:dts && pnpm build:js"
   },
   "devDependencies": {
-    "tsup": "^7.2.0",
-    "wasm-pack": "^0.12.1"
+    "esbuild": "^0.19.5",
+    "typescript": "^5.2.2"
   }
 }

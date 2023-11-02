@@ -12,10 +12,27 @@ repository = "https://github.com/crabnebula-dev/devtools"
 crate-type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = "0.2.87"
-fst = "0.4.7"
-lazy_static = "1.4.0"
-wee_alloc = "0.4.5"
+fst = { git = "https://github.com/CrabNejonas/fst", default-features = false }
+lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
 
 [build-dependencies]
-fst = "0.4.7"
+fst = { git = "https://github.com/CrabNejonas/fst" }
+
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false, features = ["html_reports"] }
+
+[[bench]]
+name = "simple"
+harness = false
+
+[features]
+default = ["std"]
+std = []
+_web_build = []
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = 3
+strip = true
