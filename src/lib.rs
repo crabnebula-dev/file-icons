@@ -56,7 +56,7 @@ lazy_static! {
 /// Unsafe low-level version of [`get_icon_for_file`]. Only use this in `no_std` mode.
 #[no_mangle]
 #[inline]
-pub unsafe fn _get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
+pub unsafe fn _get_icon_for_file(data: *const u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
 
@@ -72,7 +72,7 @@ pub unsafe fn _get_icon_for_file(data: *mut u8, len: usize) -> Option<u64> {
 /// Unsafe low-level version of [`get_icon_for_folder`]. Only use this in `no_std` mode.
 #[no_mangle]
 #[inline]
-pub unsafe fn _get_icon_for_folder(data: *mut u8, len: usize) -> Option<u64> {
+pub unsafe fn _get_icon_for_folder(data: *const u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
 

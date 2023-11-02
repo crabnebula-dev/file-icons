@@ -7,8 +7,9 @@ function setCDN(root) {
 }
 var textEncoder = new TextEncoder();
 function lookupIcon(path, fn) {
-  if (!wasm)
-    throw new Error("Must call init() before using any functions.");
+  if (!ICON_ROOT) {
+    throw new Error("Must call setCDN() before using any functions.");
+  }
   const view = new Uint8Array(wasm.memory.buffer, 0, 1024);
   const { written } = textEncoder.encodeInto(path, view);
   const retptr = (view.byteOffset + written | 15) + 1;
