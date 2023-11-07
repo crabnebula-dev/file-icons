@@ -91,6 +91,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build
-        run: pnpm build
+        run: pnpm build:debug
       - name: Run E2E tests
+        env:
+          MOZ_HEADLESS: 1
         run: pnpm test:e2e
