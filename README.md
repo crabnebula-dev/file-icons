@@ -109,6 +109,46 @@ _get_icon_for_file      time:   [53.251 ns  53.374 ns  53.538 ns]
 _get_icon_for_folder    time:   [70.595 ns  70.680 ns  70.771 ns]
 ```
 
+## Usage with Vite
+
+If you are using [Vite](https://vitejs.dev/) as your build tool you might want to use the plugin [vite-plugin-static-copy](https://github.com/sapphi-red/vite-plugin-static-copy) to pull the icons from the node_modules folder. 
+
+Just install the plugin with
+
+> Taken from the plugin [README](https://github.com/sapphi-red/vite-plugin-static-copy#install)
+
+```shell 
+npm i -D vite-plugin-static-copy # yarn add -D vite-plugin-static-copy
+```
+
+and add the following configuration to your `vite.config.js` / `vite.config.ts`
+
+```javascript
+// vite.config.js / vite.config.ts
+import { viteStaticCopy } from 'vite-plugin-static-copy'
+import { normalizePath } from "vite";
+
+export default {
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: normalizePath(
+            path.resolve(__dirname, "node_modules/file-icons/icons") + "/[!.]*"
+          ),
+          dest: "./icons/",
+        }
+      ]
+    })
+  ]
+}
+```
+ 
+> :warning: **Make sure that the "dest" is set correctly** otherwise the ``setCDN("/icons/");`` will not work. Make sure they match.
+
+> :warning: **This will copy all the icons into your ``./dist/icons`` directory on build and add around ~3.32 MB to it**
+
+
 ## Contributing
 
 PRs are welcome!
