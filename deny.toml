@@ -1,0 +1,16 @@
+# Target triples to include when checking. This is essentially our supported target list.
+targets = [
+    { triple = "wasm32-unknown-unknown" },
+]
+
+# This section is considered when running `cargo deny check licenses`
+# More documentation for the licenses section can be found here:
+# https://embarkstudios.github.io/cargo-deny/checks/licenses/cfg.html
+[licenses]
+allow = [
+    "MIT", # requires license notice
+    "Apache-2.0", # requires license notice
+]
+
+[sources]
+allow-git = ["https://github.com/CrabNejonas/fst"]

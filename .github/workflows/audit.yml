@@ -1,0 +1,66 @@
+name: Audit
+
+on:
+  push:
+    paths:
+      - '.github/workflows/audit.yml'
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+      - '**/package.json'
+      - '**/pnpm-lock.yaml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pre_ci:
+    uses: dtolnay/.github/.github/workflows/pre_ci.yml@master
+
+  audit:
+    runs-on: ubuntu-latest
+    needs: pre_ci
+    if: needs.pre_ci.outputs.continue
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+      - name: Audit JS
+        run: pnpm audit
+      - name: Audit Rust
+        uses: rustsec/audit-check@v1.4.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  check-licenses:
+    runs-on: ubuntu-latest
+    needs: pre_ci
+    if: needs.pre_ci.outputs.continue
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+      - name: Install dependencies
+        run: pnpm install -g license-checker
+      - name: Check JavaScript Licenses
+        working-directory: web-client
+        run:  license-checker --summary --onlyAllow="MIT;Apache-2.0;BSD-2-Clause" --excludePackages="spa-client@0.0.0"
+      - name: Check Rust Licenses
+        uses: EmbarkStudios/cargo-deny-action@v1
