@@ -4,12 +4,12 @@ on:
   push:
     paths:
       - ".github/workflows/ci.yml"
-      - "**/*.rs"
+      - "src/**"
       - "**/Cargo.toml"
   pull_request:
     paths:
       - ".github/workflows/ci.yml"
-      - "**/*.rs"
+      - "src/**"
       - "**/Cargo.toml"
 
 permissions:
