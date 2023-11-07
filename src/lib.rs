@@ -59,8 +59,9 @@ lazy_static! {
 pub unsafe fn _get_icon_for_file(data: *const u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
+    let filename = path.rsplit_once('/').map(|(_, f)| f).unwrap_or(path);
 
-    let icon = FILENAME_ICONS.get(path.as_bytes()).or_else(|| {
+    let icon = FILENAME_ICONS.get(filename.as_bytes()).or_else(|| {
         let ext = path.rsplit_once('.')?.1;
 
         EXT_ICONS.get(ext.as_bytes())
@@ -75,8 +76,9 @@ pub unsafe fn _get_icon_for_file(data: *const u8, len: usize) -> Option<u64> {
 pub unsafe fn _get_icon_for_folder(data: *const u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
+    let foldername = path.rsplit_once('/').map(|(_, f)| f).unwrap_or(path);
 
-    let icon = FOLDER_ICONS.get(path.as_bytes());
+    let icon = FOLDER_ICONS.get(foldername.as_bytes());
 
     icon
 }

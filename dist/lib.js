@@ -1,5 +1,5 @@
 // src/lib.ts
-import * as _wasm from "./file_icons-4DY5MFVA.wasm";
+import * as _wasm from "./file_icons-4HXNNVED.wasm";
 var wasm = _wasm;
 var ICON_ROOT;
 function setCDN(root) {

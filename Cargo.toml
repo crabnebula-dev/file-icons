@@ -9,7 +9,7 @@ repository = "https://github.com/crabnebula-dev/devtools"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 fst = { git = "https://github.com/CrabNejonas/fst", default-features = false }
