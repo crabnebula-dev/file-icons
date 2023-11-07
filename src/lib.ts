@@ -1,6 +1,7 @@
 /// <reference lib="esnext" />
 
-import * as _wasm from "../target/wasm32-unknown-unknown/release/file_icons.wasm";
+// @ts-ignore this path is dynamically defined
+import * as _wasm from "file_icons.wasm";
 
 const wasm = _wasm;
 let ICON_ROOT;
