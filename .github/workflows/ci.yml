@@ -50,7 +50,7 @@ jobs:
         with:
           components: clippy
       - uses: Swatinem/rust-cache@v2
-      - run: cargo clippy --features unstable -- -Dclippy::all -Dclippy::pedantic
+      - run: cargo clippy -- -Dclippy::all -Dclippy::pedantic
 
   rustfmt:
     name: Rustfmt

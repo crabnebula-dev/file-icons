@@ -54,12 +54,16 @@ lazy_static! {
 }
 
 /// Unsafe low-level version of [`get_icon_for_file`]. Only use this in `no_std` mode.
+///
+/// # Safety
+///
+/// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
 #[inline]
-pub unsafe fn _get_icon_for_file(data: *const u8, len: usize) -> Option<u64> {
+pub unsafe extern "Rust" fn _get_icon_for_file(data: *const u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
-    let filename = path.rsplit_once('/').map(|(_, f)| f).unwrap_or(path);
+    let filename = path.rsplit_once('/').map_or(path, |(_, f)| f);
 
     let icon = FILENAME_ICONS.get(filename.as_bytes()).or_else(|| {
         let ext = path.rsplit_once('.')?.1;
@@ -71,12 +75,16 @@ pub unsafe fn _get_icon_for_file(data: *const u8, len: usize) -> Option<u64> {
 }
 
 /// Unsafe low-level version of [`get_icon_for_folder`]. Only use this in `no_std` mode.
+///
+/// # Safety
+///
+/// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
 #[inline]
-pub unsafe fn _get_icon_for_folder(data: *const u8, len: usize) -> Option<u64> {
+pub unsafe extern "Rust" fn _get_icon_for_folder(data: *const u8, len: usize) -> Option<u64> {
     let buf = unsafe { slice::from_raw_parts(data, len) };
     let path = str::from_utf8_unchecked(buf);
-    let foldername = path.rsplit_once('/').map(|(_, f)| f).unwrap_or(path);
+    let foldername = path.rsplit_once('/').map_or(path, |(_, f)| f);
 
     let icon = FOLDER_ICONS.get(foldername.as_bytes());
 
@@ -88,9 +96,10 @@ pub unsafe fn _get_icon_for_folder(data: *const u8, len: usize) -> Option<u64> {
 /// If no icon can be found, `None` is returned.
 /// The ID corresponds to the file names in the `icons` folder
 #[cfg(feature = "std")]
+#[must_use]
 pub fn get_icon_for_file(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
-    unsafe { _get_icon_for_file(path.as_ptr() as *mut u8, path.len()) }
+    unsafe { _get_icon_for_file(path.as_ptr().cast_mut(), path.len()) }
 }
 
 /// Returns the ID of an icon for a given folder.
@@ -98,9 +107,10 @@ pub fn get_icon_for_file(path: &Path) -> Option<u64> {
 /// If no icon can be found, `None` is returned.
 /// The ID corresponds to the file names in the `icons` folder
 #[cfg(feature = "std")]
+#[must_use]
 pub fn get_icon_for_folder(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
-    unsafe { _get_icon_for_folder(path.as_ptr() as *mut u8, path.len()) }
+    unsafe { _get_icon_for_folder(path.as_ptr().cast_mut(), path.len()) }
 }
 
 #[cfg(feature = "_web_build")]
