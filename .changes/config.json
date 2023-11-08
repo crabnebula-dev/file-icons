@@ -24,7 +24,14 @@
   "packages": {
     "@crabnebula/file-icons": {
       "path": ".",
-      "manager": "javascript"
+      "manager": "javascript",
+      "dependencies": [
+        "file-icons"
+      ]
+    },
+    "file-icons": {
+      "path": ".",
+      "manager": "rust"
     }
   }
 }

@@ -10,7 +10,7 @@
   ],
   "repository": "https://github.com/crabnebula-dev/file-icons",
   "bugs": {
-    "url": "https://github.com/crabnebula-dev/file-icons/issues",
+    "url": "https://github.com/crabnebula-dev/file-icons/issues"
   },
   "type": "module",
   "main": "dist/lib.js",
