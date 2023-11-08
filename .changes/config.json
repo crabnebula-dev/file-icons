@@ -1,0 +1,25 @@
+{
+  "gitSiteUrl": "https://github.com/crabnebula-dev/file-icons/",
+  "pkgManagers": {
+    "javascript": {
+      "version": true,
+      "getPublishedVersion": "npm view ${ pkgFile.pkg.name } version",
+      "publish": [
+        "npm publish --access public"
+      ]
+    },
+    "rust": {
+      "version": true,
+      "getPublishedVersion": "cargo search ${ pkg.pkg } --limit 1 | sed -nE 's/^[^\"]*\"//; s/\".*//1p' -",
+      "publish": [
+        "cargo publish"
+      ]
+    }
+  },
+  "packages": {
+    "@crabnebula/file-icons": {
+      "path": ".",
+      "manager": "javascript"
+    }
+  }
+}
