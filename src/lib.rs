@@ -64,12 +64,10 @@ unsafe extern "Rust" fn _fi(path_ptr: *const u8, path_len: usize) -> Option<u64>
     let path = unsafe { slice::from_raw_parts(path_ptr, path_len) };
     let basename = path.rsplitn(2, |c| *c == b'/').next().unwrap();
 
-    let icon = FILENAME_ICONS.get(basename).or_else(|| {
+    FILENAME_ICONS.get(basename).or_else(|| {
         let ext = basename.rsplitn(2, |&c| c == b'.').next()?;
         EXT_ICONS.get(ext)
-    });
-
-    icon
+    })
 }
 
 /// Unsafe low-level version of [`get_icon_for_folder`]. Only use this in `no_std` mode.
