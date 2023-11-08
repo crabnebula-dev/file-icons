@@ -1,11 +1,13 @@
 [package]
 name = "file-icons"
-authors = ["CrabNebula <hello@crabnebula.dev>"]
+authors = ["Jonas Kruckenberg <jonas@crabnebula.dev>", "CrabNebula <hello@crabnebula.dev>"]
 edition = "2021"
 version = "0.1.0"
 rust-version = "1.70.0"
 license = "MIT or Apache-2.0"
-repository = "https://github.com/crabnebula-dev/devtools"
+repository = "https://github.com/crabnebula-dev/file-icons"
+keywords = ["icons", "file-icons"]
+include = ["/src", "LICENSE-MIT.md", "LICENSE-APACHE.md", "/icons"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
