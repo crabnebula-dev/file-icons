@@ -38,7 +38,7 @@ function lookupIcon(
  * You **MUST** call `setCDN` before calling this function with a valid URL to where the icons from this package are hosted.
  */
 export function getIconForFile(path: string): string | null {
-  return lookupIcon(path, wasm._get_icon_for_file);
+  return lookupIcon(path, wasm._fi);
 }
 
 /**
@@ -46,5 +46,5 @@ export function getIconForFile(path: string): string | null {
  * You **MUST** call `setCDN` before calling this function with a valid URL to where the icons from this package are hosted.
  */
 export function getIconForFolder(path: string): string | null {
-  return lookupIcon(path, wasm._get_icon_for_folder);
+  return lookupIcon(path, wasm._fo);
 }

@@ -1,11 +1,11 @@
 declare module "*.wasm" {
   export const memory: WebAssembly.Memory;
-  export function _get_icon_for_file(
+  export function _fi(
     retptr: number,
     ptr: number,
     len: number,
   ): void;
-  export function _get_icon_for_folder(
+  export function _fo(
     retptr: number,
     ptr: number,
     len: number,

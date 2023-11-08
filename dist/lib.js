@@ -1,5 +1,5 @@
 // src/lib.ts
-import * as _wasm from "./file_icons-KM7ZT43I.wasm";
+import * as _wasm from "./file_icons.wasm";
 var wasm = _wasm;
 var ICON_ROOT;
 function setCDN(root) {
@@ -19,10 +19,10 @@ function lookupIcon(path, fn) {
   return tag === 0 ? null : `${ICON_ROOT}${BigInt.asUintN(64, value)}.svg`;
 }
 function getIconForFile(path) {
-  return lookupIcon(path, wasm._get_icon_for_file);
+  return lookupIcon(path, wasm._fi);
 }
 function getIconForFolder(path) {
-  return lookupIcon(path, wasm._get_icon_for_folder);
+  return lookupIcon(path, wasm._fo);
 }
 export {
   getIconForFile,
