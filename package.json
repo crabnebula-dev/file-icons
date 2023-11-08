@@ -1,6 +1,6 @@
 {
   "name": "@crabnebula/file-icons",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "File Icons for IDEs",
   "license": "MIT OR Apache-2.0",
   "author": "Jonas Kruckenberg <jonas@crabnebula.dev>",
