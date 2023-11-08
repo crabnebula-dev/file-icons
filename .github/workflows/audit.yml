@@ -33,8 +33,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'pnpm'
-          cache-dependency-path: 'pnpm-lock.yaml'
       - name: Audit JS
         run: pnpm audit
       - name: Audit Rust
