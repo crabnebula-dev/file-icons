@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@nightly
       - uses: Swatinem/rust-cache@v2
       - run: cargo check
@@ -45,7 +45,7 @@ jobs:
     if: needs.pre_ci.outputs.continue
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy
@@ -59,7 +59,7 @@ jobs:
     if: needs.pre_ci.outputs.continue
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install rustfmt with nightly toolchain
         uses: dtolnay/rust-toolchain@nightly
         with:
@@ -75,7 +75,7 @@ jobs:
     if: needs.pre_ci.outputs.continue
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: browser-actions/setup-firefox@v1
       - name: Install rustfmt with nightly toolchain
         uses: dtolnay/rust-toolchain@nightly
