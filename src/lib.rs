@@ -19,10 +19,10 @@ file-icons = { version = "0.1", default-features = false }
 In `no_std` mode, [`get_icon_for_file`] and [`get_icon_for_folder`] are *not* available.
  */
 
-#![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(not(any(feature = "std", test)), no_std)]
 #![cfg_attr(feature = "_web_build", feature(core_intrinsics))]
 
-use core::{slice, str};
+use core::slice;
 use fst::Map;
 use lazy_static::lazy_static;
 #[cfg(feature = "std")]
@@ -60,18 +60,14 @@ lazy_static! {
 /// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
 #[inline]
-pub unsafe extern "Rust" fn _get_icon_for_file(data: *const u8, len: usize) -> Option<u64> {
-    let buf = unsafe { slice::from_raw_parts(data, len) };
-    let path = str::from_utf8_unchecked(buf);
-    let filename = path.rsplit_once('/').map_or(path, |(_, f)| f);
+unsafe extern "Rust" fn _fi(path_ptr: *const u8, path_len: usize) -> Option<u64> {
+    let path = unsafe { slice::from_raw_parts(path_ptr, path_len) };
+    let basename = path.rsplitn(2, |c| *c == b'/').next().unwrap();
 
-    let icon = FILENAME_ICONS.get(filename.as_bytes()).or_else(|| {
-        let ext = path.rsplit_once('.')?.1;
-
-        EXT_ICONS.get(ext.as_bytes())
-    });
-
-    icon
+    FILENAME_ICONS.get(basename).or_else(|| {
+        let ext = basename.rsplitn(2, |&c| c == b'.').next()?;
+        EXT_ICONS.get(ext)
+    })
 }
 
 /// Unsafe low-level version of [`get_icon_for_folder`]. Only use this in `no_std` mode.
@@ -81,14 +77,11 @@ pub unsafe extern "Rust" fn _get_icon_for_file(data: *const u8, len: usize) -> O
 /// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
 #[inline]
-pub unsafe extern "Rust" fn _get_icon_for_folder(data: *const u8, len: usize) -> Option<u64> {
-    let buf = unsafe { slice::from_raw_parts(data, len) };
-    let path = str::from_utf8_unchecked(buf);
-    let foldername = path.rsplit_once('/').map_or(path, |(_, f)| f);
+unsafe extern "Rust" fn _fo(path_ptr: *const u8, path_len: usize) -> Option<u64> {
+    let path = unsafe { slice::from_raw_parts(path_ptr, path_len) };
+    let basename = path.rsplitn(2, |&b| b == b'/').next().unwrap_or(path);
 
-    let icon = FOLDER_ICONS.get(foldername.as_bytes());
-
-    icon
+    FOLDER_ICONS.get(basename)
 }
 
 /// Returns the ID of an icon for a given file.
@@ -99,7 +92,7 @@ pub unsafe extern "Rust" fn _get_icon_for_folder(data: *const u8, len: usize) ->
 #[must_use]
 pub fn get_icon_for_file(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
-    unsafe { _get_icon_for_file(path.as_ptr().cast_mut(), path.len()) }
+    unsafe { _fi(path.as_ptr().cast_mut(), path.len()) }
 }
 
 /// Returns the ID of an icon for a given folder.
@@ -110,7 +103,7 @@ pub fn get_icon_for_file(path: &Path) -> Option<u64> {
 #[must_use]
 pub fn get_icon_for_folder(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
-    unsafe { _get_icon_for_folder(path.as_ptr().cast_mut(), path.len()) }
+    unsafe { _fo(path.as_ptr().cast_mut(), path.len()) }
 }
 
 #[cfg(feature = "_web_build")]
