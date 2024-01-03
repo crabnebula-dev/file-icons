@@ -4,6 +4,7 @@
   "description": "File Icons for IDEs",
   "license": "MIT OR Apache-2.0",
   "author": "Jonas Kruckenberg <jonas@crabnebula.dev>",
+  "repository": "https://github.com/crabnebula-dev/file-icons",
   "keywords": [
     "icons",
     "file-icons"

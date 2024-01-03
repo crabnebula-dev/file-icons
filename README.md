@@ -31,17 +31,17 @@ vscode-icons to find the best matching icon for a given file or folder.
 For usage in JavaScript/TypeScript projects:
 
 ```sh
-npm install file-icons
+npm install @crabnebula/file-icons
 # OR
-yarn add file-icons
+yarn add @crabnebula/file-icons
 # OR
-pnpm add file-icons
+pnpm add @crabnebula/file-icons
 ```
 
 For usage in Rust projects:
 
 ```sh
-cargo add file-icons
+cargo add --git https://github.com/crabnebula-dev/file-icons
 ```
 
 ## Usage
@@ -53,7 +53,7 @@ matching icon could be found. You **MUST** call `setCDN` before calling this
 function with a valid URL to where the icons from this package are hosted.
 
 ```js
-import { getIconForFile, setCDN } from "file-icons";
+import { getIconForFile, setCDN } from "@crabnebula/file-icons";
 
 setCDN("/icons/"); // point this to wherever you have hosted the file-icons/icons folder
 
@@ -67,7 +67,7 @@ no matching icon could be found. You **MUST** call `setCDN` before calling this
 function with a valid URL to where the icons from this package are hosted.
 
 ```js
-import { getIconForFolder, setCDN } from "file-icons";
+import { getIconForFolder, setCDN } from "@crabnebula/file-icons";
 
 setCDN("/icons/"); // point this to wherever you have hosted the file-icons/icons folder
 
@@ -111,43 +111,53 @@ _get_icon_for_folder    time:   [70.595 ns  70.680 ns  70.771 ns]
 
 ## Usage with Vite
 
-If you are using [Vite](https://vitejs.dev/) as your build tool you might want to use the plugin [vite-plugin-static-copy](https://github.com/sapphi-red/vite-plugin-static-copy) to pull the icons from the node_modules folder. 
+If you're using Vite then there are a few Vite plugins you will need:
 
-Just install the plugin with
+- [`vite-plugin-wasm`](https://www.npmjs.com/package/vite-plugin-wasm) 
+  This plugin allows you to use WASM modules in your Vite project which this module depends on.
+- [`vite-plugin-top-level-await`](https://www.npmjs.com/package/vite-plugin-top-level-await) 
+  This module uses top-level-await which isn't supported by all browsers yet. 
+  This Vite plugin transforms the code to be compatible with all browsers.
+- [`vite-plugin-static-copy`](https://github.com/sapphi-red/vite-plugin-static-copy) 
+  This plugin copies the icons from the node_modules folder to the dist folder
 
-> Taken from the plugin [README](https://github.com/sapphi-red/vite-plugin-static-copy#install)
 
 ```shell 
-npm i -D vite-plugin-static-copy # yarn add -D vite-plugin-static-copy
+npm install vite-plugin-wasm vite-plugin-top-level-await vite-plugin-static-copy
+# OR
+yarn add vite-plugin-wasm vite-plugin-top-level-await vite-plugin-static-copy
+# OR
+pnpm add vite-plugin-wasm vite-plugin-top-level-await vite-plugin-static-copy
 ```
 
 and add the following configuration to your `vite.config.js` / `vite.config.ts`
 
 ```javascript
 // vite.config.js / vite.config.ts
-import { viteStaticCopy } from 'vite-plugin-static-copy'
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 import { normalizePath } from "vite";
 
 export default {
   plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: normalizePath(
-            path.resolve(__dirname, "node_modules/file-icons/icons") + "/[!.]*"
-          ),
-          dest: "./icons/",
-        }
-      ]
-    })
+      wasm(),
+      topLevelAwait(),
+      viteStaticCopy({
+        targets: [
+          {
+            src: normalizePath(
+              path.resolve(__dirname, "node_modules/@crabnebula/file-icons/icons") + "/[!.]*"
+            ),
+            dest: "./icons/",
+          }
+        ]
+      })
   ]
 }
 ```
- 
-> :warning: **Make sure that the "dest" is set correctly** otherwise the ``setCDN("/icons/");`` will not work. Make sure they match.
 
 > :warning: **This will copy all the icons into your ``./dist/icons`` directory on build and add around ~3.32 MB to it**
-
 
 ## Contributing
 
