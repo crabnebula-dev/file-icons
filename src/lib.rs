@@ -53,6 +53,13 @@ lazy_static! {
     };
 }
 
+#[export_name = "wizer.initialize"]
+pub extern "C" fn init() {
+    lazy_static::initialize(&FILENAME_ICONS);
+    lazy_static::initialize(&EXT_ICONS);
+    lazy_static::initialize(&FOLDER_ICONS);
+}
+
 /// Unsafe low-level version of [`get_icon_for_file`]. Only use this in `no_std` mode.
 ///
 /// # Safety
