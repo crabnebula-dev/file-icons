@@ -11,6 +11,3 @@ allow = [
     "MIT", # requires license notice
     "Apache-2.0", # requires license notice
 ]
-
-[sources]
-allow-git = ["https://github.com/CrabNejonas/fst"]

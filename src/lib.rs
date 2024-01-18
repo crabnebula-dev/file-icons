@@ -23,7 +23,7 @@ In `no_std` mode, [`get_icon_for_file`] and [`get_icon_for_folder`] are *not* av
 #![cfg_attr(feature = "_web_build", feature(core_intrinsics))]
 
 use core::slice;
-use fst::Map;
+use fst_no_std::Map;
 use lazy_static::lazy_static;
 #[cfg(feature = "std")]
 use std::path::Path;
