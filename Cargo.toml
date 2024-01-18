@@ -12,11 +12,11 @@ repository = "https://github.com/crabnebula-dev/devtools"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-fst = { git = "https://github.com/CrabNejonas/fst", default-features = false }
+fst-no-std = { version = "0.4.7", default-features = false }
 lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
 
 [build-dependencies]
-fst = { git = "https://github.com/CrabNejonas/fst" }
+fst-no-std = "0.4.7"
 
 [dev-dependencies]
 criterion = { version = "0.5", default-features = false, features = ["html_reports"] }
