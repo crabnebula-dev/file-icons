@@ -1,4 +1,4 @@
-use fst::Map;
+use fst_no_std::Map;
 use std::path::Path;
 use std::{env, fs};
 
