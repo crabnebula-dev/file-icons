@@ -41,7 +41,7 @@ pnpm add @crabnebula/file-icons
 For usage in Rust projects:
 
 ```sh
-cargo add --git https://github.com/crabnebula-dev/file-icons
+cargo add file-icons
 ```
 
 ## Usage
