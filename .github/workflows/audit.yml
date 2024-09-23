@@ -38,7 +38,7 @@ jobs:
       - name: Audit JS
         run: pnpm audit
       - name: Audit Rust
-        uses: rustsec/audit-check@v1.4.1
+        uses: rustsec/audit-check@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
