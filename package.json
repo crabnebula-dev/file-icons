@@ -28,7 +28,7 @@
     "test:e2e": "pnpm vitest run tests"
   },
   "devDependencies": {
-    "@vitest/browser": "^0.34.6",
+    "@vitest/browser": "^4.0.0",
     "esbuild": "^0.21.0",
     "typescript": "^5.5.2",
     "vite-plugin-wasm": "^3.3.0",
