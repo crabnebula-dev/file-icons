@@ -28,12 +28,12 @@
     "test:e2e": "pnpm vitest run tests"
   },
   "devDependencies": {
-    "@vitest/browser": "^0.34.6",
-    "esbuild": "^0.21.5",
-    "typescript": "^5.5.2",
-    "vite-plugin-wasm": "^3.3.0",
-    "vitest": "^0.34.6",
-    "webdriverio": "^8.39.0"
+    "@vitest/browser": "^4.1.11",
+    "esbuild": "^0.28.2",
+    "typescript": "^6.0.3",
+    "vite-plugin-wasm": "^3.6.0",
+    "vitest": "^4.1.11",
+    "webdriverio": "^9.31.5"
   },
   "devEngines": {
     "packageManager": {
