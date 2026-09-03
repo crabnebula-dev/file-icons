@@ -1,3 +1,5 @@
+cargo-features = ["panic-immediate-abort"]
+
 [package]
 name = "file-icons"
 authors = ["CrabNebula <hello@crabnebula.dev>"]
@@ -31,7 +33,7 @@ std = []
 _web_build = []
 
 [profile.release]
-panic = "abort"
+panic = "immediate-abort"
 codegen-units = 1
 lto = true
 opt-level = 3
