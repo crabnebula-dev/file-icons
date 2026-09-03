@@ -20,7 +20,12 @@ In `no_std` mode, [`get_icon_for_file`] and [`get_icon_for_folder`] are *not* av
  */
 
 #![cfg_attr(not(any(feature = "std", test)), no_std)]
-#![cfg_attr(feature = "_web_build", feature(core_intrinsics))]
+// TODO: Do not rely on internal_features
+#![cfg_attr(
+    feature = "_web_build",
+    allow(internal_features),
+    feature(core_intrinsics)
+)]
 
 use core::slice;
 use fst_no_std::Map;
@@ -66,7 +71,6 @@ pub extern "C" fn init() {
 ///
 /// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
-#[inline]
 unsafe extern "Rust" fn _fi(path_ptr: *const u8, path_len: usize) -> Option<u64> {
     let path = unsafe { slice::from_raw_parts(path_ptr, path_len) };
     let basename = path.rsplitn(2, |c| *c == b'/').next().unwrap();
@@ -83,7 +87,6 @@ unsafe extern "Rust" fn _fi(path_ptr: *const u8, path_len: usize) -> Option<u64>
 ///
 /// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
-#[inline]
 unsafe extern "Rust" fn _fo(path_ptr: *const u8, path_len: usize) -> Option<u64> {
     let path = unsafe { slice::from_raw_parts(path_ptr, path_len) };
     let basename = path.rsplitn(2, |&b| b == b'/').next().unwrap_or(path);
@@ -99,7 +102,10 @@ unsafe extern "Rust" fn _fo(path_ptr: *const u8, path_len: usize) -> Option<u64>
 #[must_use]
 pub fn get_icon_for_file(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
-    unsafe { _fi(path.as_ptr().cast_mut(), path.len()) }
+    #[allow(clippy::used_underscore_items)]
+    unsafe {
+        _fi(path.as_ptr().cast_mut(), path.len())
+    }
 }
 
 /// Returns the ID of an icon for a given folder.
@@ -110,7 +116,10 @@ pub fn get_icon_for_file(path: &Path) -> Option<u64> {
 #[must_use]
 pub fn get_icon_for_folder(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
-    unsafe { _fo(path.as_ptr().cast_mut(), path.len()) }
+    #[allow(clippy::used_underscore_items)]
+    unsafe {
+        _fo(path.as_ptr().cast_mut(), path.len())
+    }
 }
 
 #[cfg(feature = "_web_build")]

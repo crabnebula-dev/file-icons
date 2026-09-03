@@ -4,7 +4,7 @@
 import * as _wasm from "file_icons.wasm";
 
 const wasm = _wasm;
-let ICON_ROOT;
+let ICON_ROOT: string | null;
 
 export function setCDN(root: string) {
   ICON_ROOT = root.endsWith("/") ? root : root + "/";

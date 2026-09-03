@@ -19,7 +19,7 @@
   "scripts": {
     "gen-lut": "esbuild scripts/gen-lut.ts --bundle --outdir=scripts --format=esm --platform=node && node scripts/gen-lut.js",
     "build:rust:debug": "cargo build --target wasm32-unknown-unknown --no-default-features --features _web_build",
-    "build:rust": "cargo build --release --target wasm32-unknown-unknown --no-default-features --features _web_build -Z build-std=core,panic_abort -Z build-std-features=panic_immediate_abort && wizer ./target/wasm32-unknown-unknown/release/file_icons.wasm -o ./target/wasm32-unknown-unknown/release/file_icons_init.wasm",
+    "build:rust": "cargo build --release --target wasm32-unknown-unknown --no-default-features --features _web_build -Z build-std=core,panic_abort && wizer ./target/wasm32-unknown-unknown/release/file_icons.wasm -o ./target/wasm32-unknown-unknown/release/file_icons_init.wasm",
     "build:dts": "tsc --declaration --emitDeclarationOnly --declarationDir dist src/lib.ts src/wasm.d.ts",
     "build:js": "esbuild src/lib.ts --bundle --format=esm --outdir=dist --loader:.wasm=copy --asset-names=[name] --alias:file_icons.wasm=./target/wasm32-unknown-unknown/release/file_icons_init.wasm",
     "build:js:debug": "esbuild src/lib.ts --bundle --format=esm --outdir=dist --loader:.wasm=copy  --asset-names=[name] --alias:file_icons.wasm=./target/wasm32-unknown-unknown/debug/file_icons.wasm",
@@ -28,12 +28,23 @@
     "test:e2e": "pnpm vitest run tests"
   },
   "devDependencies": {
-    "@vitest/browser": "^0.34.6",
-    "esbuild": "^0.21.0",
-    "typescript": "^5.5.2",
-    "vite-plugin-wasm": "^3.3.0",
-    "vitest": "^0.34.6",
-    "webdriverio": "^8.39.0"
+    "@vitest/browser": "^4.1.11",
+    "esbuild": "^0.28.2",
+    "typescript": "^6.0.3",
+    "vite-plugin-wasm": "^3.6.0",
+    "vitest": "^4.1.11",
+    "webdriverio": "^9.31.5"
   },
-  "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": ">=11 <=12",
+      "onFail": "error"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "lts",
+      "onFail": "download"
+    }
+  }
 }
