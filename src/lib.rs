@@ -21,7 +21,11 @@ In `no_std` mode, [`get_icon_for_file`] and [`get_icon_for_folder`] are *not* av
 
 #![cfg_attr(not(any(feature = "std", test)), no_std)]
 // TODO: Do not rely on internal_features
-#![cfg_attr(feature = "_web_build", allow(internal_features), feature(core_intrinsics))]
+#![cfg_attr(
+    feature = "_web_build",
+    allow(internal_features),
+    feature(core_intrinsics)
+)]
 
 use core::slice;
 use fst_no_std::Map;
@@ -99,7 +103,9 @@ unsafe extern "Rust" fn _fo(path_ptr: *const u8, path_len: usize) -> Option<u64>
 pub fn get_icon_for_file(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
     #[allow(clippy::used_underscore_items)]
-    unsafe { _fi(path.as_ptr().cast_mut(), path.len()) }
+    unsafe {
+        _fi(path.as_ptr().cast_mut(), path.len())
+    }
 }
 
 /// Returns the ID of an icon for a given folder.
@@ -111,7 +117,9 @@ pub fn get_icon_for_file(path: &Path) -> Option<u64> {
 pub fn get_icon_for_folder(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
     #[allow(clippy::used_underscore_items)]
-    unsafe { _fo(path.as_ptr().cast_mut(), path.len()) }
+    unsafe {
+        _fo(path.as_ptr().cast_mut(), path.len())
+    }
 }
 
 #[cfg(feature = "_web_build")]

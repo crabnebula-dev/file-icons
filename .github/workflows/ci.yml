@@ -77,11 +77,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: browser-actions/setup-firefox@v1
-      - name: Install rustfmt with nightly toolchain
+      - name: Install nightly toolchain
         uses: dtolnay/rust-toolchain@nightly
       - uses: pnpm/setup@v2
       - name: Install dependencies
         run: pnpm install
+      - name: Install wizer
+        run: cargo install wizer --all-features --locked
       - name: Build
         run: pnpm build
       - name: Run E2E tests
