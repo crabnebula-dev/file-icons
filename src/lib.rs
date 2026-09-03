@@ -97,6 +97,7 @@ unsafe extern "Rust" fn _fo(path_ptr: *const u8, path_len: usize) -> Option<u64>
 #[must_use]
 pub fn get_icon_for_file(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
+    #[allow(clippy::used_underscore_items)]
     unsafe { _fi(path.as_ptr().cast_mut(), path.len()) }
 }
 
@@ -108,6 +109,7 @@ pub fn get_icon_for_file(path: &Path) -> Option<u64> {
 #[must_use]
 pub fn get_icon_for_folder(path: &Path) -> Option<u64> {
     let path = path.to_string_lossy();
+    #[allow(clippy::used_underscore_items)]
     unsafe { _fo(path.as_ptr().cast_mut(), path.len()) }
 }
 
