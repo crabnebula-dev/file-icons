@@ -20,7 +20,8 @@ In `no_std` mode, [`get_icon_for_file`] and [`get_icon_for_folder`] are *not* av
  */
 
 #![cfg_attr(not(any(feature = "std", test)), no_std)]
-#![cfg_attr(feature = "_web_build", feature(core_intrinsics))]
+// TODO: Do not rely on internal_features
+#![cfg_attr(feature = "_web_build", allow(internal_features), feature(core_intrinsics))]
 
 use core::slice;
 use fst_no_std::Map;
