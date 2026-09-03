@@ -66,7 +66,6 @@ pub extern "C" fn init() {
 ///
 /// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
-#[inline]
 unsafe extern "Rust" fn _fi(path_ptr: *const u8, path_len: usize) -> Option<u64> {
     let path = unsafe { slice::from_raw_parts(path_ptr, path_len) };
     let basename = path.rsplitn(2, |c| *c == b'/').next().unwrap();
@@ -83,7 +82,6 @@ unsafe extern "Rust" fn _fi(path_ptr: *const u8, path_len: usize) -> Option<u64>
 ///
 /// `data` must point to a valid UTF-8 string and `len` must be the length of that string.
 #[no_mangle]
-#[inline]
 unsafe extern "Rust" fn _fo(path_ptr: *const u8, path_len: usize) -> Option<u64> {
     let path = unsafe { slice::from_raw_parts(path_ptr, path_len) };
     let basename = path.rsplitn(2, |&b| b == b'/').next().unwrap_or(path);
