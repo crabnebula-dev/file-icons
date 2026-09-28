@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@vitest/browser": "^4.1.11",
+    "@vitest/browser-webdriverio": "^5.0.0",
     "esbuild": "^0.28.2",
     "typescript": "^6.0.3",
     "vite-plugin-wasm": "^3.6.0",
