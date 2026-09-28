@@ -5,6 +5,14 @@ on:
     branches:
       - main
 
+permissions:
+  # required for oidc token
+  id-token: write
+  # required to create the GitHub Release
+  contents: write
+  # required for creating the Version Packages Release
+  pull-requests: write
+
 jobs:
   version-or-publish:
     runs-on: ubuntu-latest
@@ -15,13 +23,10 @@ jobs:
       successfulPublish: ${{ steps.covector.outputs.successfulPublish }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # required for use of git history
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 14
-          registry-url: "https://registry.npmjs.org"
+      - uses: pnpm/setup@v2
       - name: cargo login
         run: cargo login ${{ secrets.CRATE_TOKEN }}
       - name: git config
@@ -40,7 +45,7 @@ jobs:
           createRelease: true
       - name: Create Pull Request With Versions Bumped
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8.1.1
         if: steps.covector.outputs.commandRan == 'version'
         with:
           title: "Publish New Versions"
@@ -48,3 +53,4 @@ jobs:
           labels: "version updates"
           branch: "release"
           body: ${{ steps.covector.outputs.change }}
+          sign-commits: true
