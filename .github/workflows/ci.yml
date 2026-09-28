@@ -79,7 +79,7 @@ jobs:
       - uses: browser-actions/setup-firefox@v1
       - name: Install nightly toolchain
         uses: dtolnay/rust-toolchain@nightly
-      - uses: pnpm/setup@v2
+      - uses: pnpm/setup@v3
       - name: Install dependencies
         run: pnpm install
       - name: Install wizer
