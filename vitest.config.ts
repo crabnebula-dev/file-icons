@@ -8,7 +8,10 @@ export default defineConfig({
         browser: {
             provider: webdriverio(),
             enabled: true,
-            headless: true
+            headless: true,
+            instances: [
+                { browser: 'firefox' },
+            ],
         },
     }
 })
