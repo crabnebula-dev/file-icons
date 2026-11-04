@@ -20,12 +20,6 @@ In `no_std` mode, [`get_icon_for_file`] and [`get_icon_for_folder`] are *not* av
  */
 
 #![cfg_attr(not(any(feature = "std", test)), no_std)]
-// TODO: Do not rely on internal_features
-#![cfg_attr(
-    feature = "_web_build",
-    allow(internal_features),
-    feature(core_intrinsics)
-)]
 
 use core::slice;
 use fst_no_std::Map;
@@ -125,5 +119,5 @@ pub fn get_icon_for_folder(path: &Path) -> Option<u64> {
 #[cfg(feature = "_web_build")]
 #[panic_handler]
 fn panic_handler(_info: &core::panic::PanicInfo) -> ! {
-    core::intrinsics::abort()
+    core::arch::wasm32::unreachable()
 }
