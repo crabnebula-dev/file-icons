@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - ".github/workflows/ci.yml"
       - "src/**"
@@ -23,13 +25,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pre_ci:
-    uses: dtolnay/.github/.github/workflows/pre_ci.yml@master
-
   check:
     name: Rust Check
-    needs: pre_ci
-    if: needs.pre_ci.outputs.continue
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -41,8 +38,6 @@ jobs:
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
-    needs: pre_ci
-    if: needs.pre_ci.outputs.continue
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
@@ -55,8 +50,6 @@ jobs:
   rustfmt:
     name: Rustfmt
     runs-on: ubuntu-latest
-    needs: pre_ci
-    if: needs.pre_ci.outputs.continue
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
@@ -70,9 +63,7 @@ jobs:
     name: E2E tests
     runs-on: ubuntu-latest
     needs:
-      - pre_ci
       - check
-    if: needs.pre_ci.outputs.continue
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
